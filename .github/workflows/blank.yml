@@ -14,7 +14,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: [10.x]
+          node-version: 16
+
       - run: npm i yarn -g
         # --frozen-lockfile 持续集成环境中每次安装依赖都和开发时一致
       - run: yarn add --frozen-lockfile
