@@ -2,39 +2,28 @@
 
 name: CI
 
-# 在master分支发生push事件时触发。
 on:
   push:
     branches:
       - main
-
-jobs: # 工作流
-  build:
+# 任务
+jobs:
+  deploy:
     runs-on: ubuntu-latest #运行在虚拟机环境ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x]
-
     steps:
-      - name: Checkout # 步骤1
-        uses: actions/checkout@v1 # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
-      - name: Use Node.js ${{ matrix.node-version }} # 步骤2
-        uses: actions/setup-node@v1 # 作用：安装nodejs
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }} # 版本
-      - name: npm install # 步骤3 （同时部署到github和coding）
-        env: # 设置环境变量
-          GITHUB: ${{ secrets.ACCESS_TOKEN }} # toKen私密变量
-          # CODING: ${{ secrets.CODING_TOKEN }} # 腾讯云开发者平台（coding）私密token
-        run: npm install
+          node-version: [10.x]
+      - run: npm i yarn -g
+        # --frozen-lockfile 持续集成环境中每次安装依赖都和开发时一致
+      - run: yarn add --frozen-lockfile
 
-      - name: build
-        run: npm run docs:build
+      - name: Build
+        run: yarn docs:build
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@4.2.0
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          BRANCH: gh-pages
-          # 部署目录为 VuePress 的默认输出目录
-          FOLDER: dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: /dist
