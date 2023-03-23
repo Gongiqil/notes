@@ -30,9 +30,11 @@ jobs:
         # 步骤执行指令
         run: yarn docs:build
 
-      # 命名这个任务为发布Deploy
+      # 部署到 GitHub Pages --打包文件推送至 gh-pages 分支
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
+          # toKen私密变量
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          # 部署目录为 VuePress 的输出目录
           FOLDER: dist
