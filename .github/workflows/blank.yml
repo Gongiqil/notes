@@ -35,8 +35,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          # toKen私密变量
-          deploy_key: ${{ secrets.ACCESS_TOKEN }}
-          publish_branch: gh-pages
+          # 设置个人访问令牌
+          personal_token: ${{ secrets.ACCESS_TOKEN }}
           # 部署目录为 VuePress 的输出目录
           publish_dir: dist
