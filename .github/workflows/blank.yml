@@ -2,44 +2,38 @@
 
 name: CI
 
-# 触发条件：在 push 到 main 分支后
+# 在master分支发生push事件时触发。
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
-# 任务
-jobs:
-  deploy:
+      - master
+jobs: # 工作流
+  build:
     runs-on: ubuntu-latest #运行在虚拟机环境ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout # 步骤1
+        uses: actions/checkout@v1 # 使用的动作。格式：userName/repoName。作用：检出仓库，获取源码。 官方actions库：https://github.com/actions
+      - name: Use Node.js ${{ matrix.node-version }} # 步骤2
+        uses: actions/setup-node@v1 # 作用：安装nodejs
         with:
-          persist-credentials: false
+          node-version: ${{ matrix.node-version }} # 版本
+      - name: npm install # 步骤3 （同时部署到github和coding）
+        env: # 设置环境变量
+          GITHUB: ${{ secrets.ACCESS_TOKEN }} # toKen私密变量
+          # CODING: ${{ secrets.CODING_TOKEN }} # 腾讯云开发者平台（coding）私密token
+        run: npm install
 
-      - uses: actions/cache@v2.1.4
-        id: node-modules
-        with:
-          path: node_modules/
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
+      - name: build
+        run: npm run docs:build
 
-      - name: Install Deps
-        if: steps.node-modules.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
-
-      - name: Build Template # 打包
-        run: yarn run docs:build
-
-      - name: Deploy # 同时部署到github
+      - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.2.0
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # toKen私密变量
           BRANCH: gh-pages
           # 部署目录为 VuePress 的默认输出目录
           FOLDER: dist
-
