@@ -1,5 +1,4 @@
 # 工作流自动化部署
-# workflow -> jobs（任务）-> step（步骤）-> action（动作）
 
 name: CI
 
