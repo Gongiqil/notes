@@ -37,5 +37,6 @@ jobs:
         with:
           # toKen私密变量
           deploy_key: ${{ secrets.ACCESS_TOKEN }}
+          publish_branch: gh-pages
           # 部署目录为 VuePress 的输出目录
           publish_dir: dist
