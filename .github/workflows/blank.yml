@@ -1,21 +1,16 @@
-# 工作流自动化部署 ## workflow -> jobs（任务）-> step（步骤）-> action（动作）
+# 工作流自动化部署
 
 name: CI
 
 on:
-  #监听push操作
   push:
     branches:
       - main
-
 # 任务
 jobs:
   deploy:
-    # 运行环境
-    runs-on: ubuntu-latest
-    # 步骤
+    runs-on: ubuntu-latest #运行在虚拟机环境ubuntu-latest
     steps:
-      - # 使用别人的action
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
         with:
@@ -24,14 +19,11 @@ jobs:
       - run: npm i yarn -g
       - run: yarn install
 
-      # 步骤名称
       - name: Build
-        # 步骤执行指令
         run: yarn docs:build
 
-      # 命名这个任务为发布Deploy
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: /dist
