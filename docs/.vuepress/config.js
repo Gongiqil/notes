@@ -4,9 +4,8 @@ module.exports = {
     head: [
         ['link', { rel: 'icon', href: '/favicon.ico' }]
     ],
-    // 和仓库名相同
-    base: '/notes/',
-    dest:'dist',
+    base: '/notes/', // 和仓库名相同
+    dest:'dist', // 输出目录
     themeConfig : {
         nav : [
             { text: "home", link: "/" },// ‘/’结束，默认读取 README.md
