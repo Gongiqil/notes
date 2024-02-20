@@ -5,7 +5,12 @@
 https://github.com/Gongiqil/notes
 ```
 
-### workflows文件
+### 预览地址
+```
+https://gongiqil.github.io/notes/
+```
+
+### GitHub Actions - workflows文件
 ```
 实现工作流自动化部署
 ```

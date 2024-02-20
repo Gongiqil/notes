@@ -10,7 +10,8 @@ module.exports = {
         nav: [
             {text: "home", link: "/"},// ‘/’结束，默认读取 README.md
             {text: "foo", link: "/guide/foo/"},
-            {text: "bar", link: "/guide/bar/"}
+            {text: "bar", link: "/guide/bar/"},
+            {text: "2024前端面试题", link: "/guide/interview/"},
         ],
         sidebar: {
             // 不同的页面组来显示不同的侧边栏
@@ -22,6 +23,13 @@ module.exports = {
             '/guide/bar/': [
                 '',      /* /bar/ */
                 'three', /* /bar/three.html */
+            ],
+            '/guide/interview/': [
+                '',      /* /interview/ */
+                'P1',    /* /interview/P1 */
+                'P2',    /* /interview/P2 */
+                'P3',    /* /interview/P3 */
+                'P4',    /* /interview/P4 */
             ],
             // fallback 确保 fallback 侧边栏被最后定义。VuePress 会按顺序遍历侧边栏配置来寻找匹配的配置。
             '/': []
